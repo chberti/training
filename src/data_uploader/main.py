@@ -1,9 +1,11 @@
 # main.py
 from flask import Flask, request, render_template, session, redirect
 from pathlib import Path
-import os
-from werkzeug.utils import secure_filename
+from mimetypes import MimeTypes
 import pandas as pd
+from werkzeug.utils import secure_filename
+from modules.csv_importer import csv_parse
+
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = Path(__file__).parent / "uploads"
@@ -20,13 +22,20 @@ def upload():
     match request.method:
         case "POST":
             f = request.files.get('file')
-            # Extracting uploaded file name
             data_filename = secure_filename(f.filename)
+            staging_path = app.config['UPLOAD_FOLDER'] / data_filename
+            # Extracting uploaded file name
             f.save( app.config['UPLOAD_FOLDER'] / data_filename)
+            # session['uploaded_data_file_path'] =  os.path.join(app.config['UPLOAD_FOLDER'],  data_filename)
 
-            session['uploaded_data_file_path'] =  os.path.join(app.config['UPLOAD_FOLDER'],  data_filename)
+            mime = MimeTypes()
+            mime_type = mime.guess_type(staging_path)[0]
+            match mime_type:
+                case 'text/csv':
+                    (nb_lines, schema) = csv_parse(staging_path)
+                    return render_template('success_csv.html', nb_lines = nb_lines, schema = schema)
 
-            return render_template('success_upload.html')
+            return render_template('success_upload.html', mime_type = mime_type)
         case "GET":
             return render_template("upload_page.html")
             #return f"Now I should render template located at {templates_directory}"

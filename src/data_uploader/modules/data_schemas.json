@@ -1,0 +1,48 @@
+{
+  "person": {
+    "columns": [
+      "person_id",
+      "first_name",
+      "middle_name",
+      "last_name",
+      "email",
+      "phone",
+      "fax",
+      "title"
+    ],
+    "id_columns": [
+      "first_name",
+      "middle_name",
+      "last_name"
+    ],
+    "column_id_name": "person_id"
+  },
+  "job": {
+    "columns": [
+      "job_id",
+      "person_id",
+      "org_id",
+      "job_title",
+      "job_type",
+      "start_date"
+    ],
+    "id_columns": [
+      "job_title",
+      "person_id",
+      "start_date"
+    ],
+    "column_id_name": "job_id"
+  },
+  "organization": {
+    "columns": [
+    "org_id",
+    "org_name",
+    "org_vivo_uri"
+    ],
+    "id_columns": [
+      "org_name",
+      "org_vivo_uri"
+    ],
+    "column_id_name": "org_id"
+  }
+}

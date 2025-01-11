@@ -6,6 +6,8 @@ dependencies = [
     "pytest",
     "pandas",
     "openpyxl",
-    "werkzeug"
+    "werkzeug",
+    "SQLAlchemy",
+    "psycopg2"
 ]
 
