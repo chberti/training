@@ -33,7 +33,7 @@ def xlsx_parse(file_path):
                          'raw_fax': 'fax',
                          'raw_title': 'title',
                          'raw_job_title': 'job_title',
-                         'raw_position': 'job_type',
+                         'raw_position_type': 'job_type',
                          'raw_org_name': 'org_name',
                          'raw_date': 'start_date',
                          'raw_uri': 'org_vivo_uri'

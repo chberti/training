@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from modules.csv_importer import csv_parse
 from modules.xlsx_importer import xlsx_parse
 from modules.postgresql_exporter import load_data
+import os
 
 app = Flask(__name__)
 
@@ -28,13 +29,15 @@ def show_person():
 def upload():
     match request.method:
         case "POST":
+            # Extraction du fihcier et sauvegarde dans un dossier uploads
             f = request.files.get('file')
-            data_filename = secure_filename(f.filename)
+            data_filename = f.filename
             staging_path = app.config['UPLOAD_FOLDER'] / data_filename
             # Extracting uploaded file name
             f.save( app.config['UPLOAD_FOLDER'] / data_filename)
-            # session['uploaded_data_file_path'] =  os.path.join(app.config['UPLOAD_FOLDER'],  data_filename)
-
+            app.logger.info(f"file saved successfully at {staging_path}")
+            session['uploaded_data_file_path'] =  app.config['UPLOAD_FOLDER'] /  data_filename
+            # Traitement du fichier qui dépend du mime type
             mime = MimeTypes()
             mime_type = mime.guess_type(staging_path)[0]
             match mime_type:
