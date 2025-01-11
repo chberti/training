@@ -5,6 +5,7 @@ from mimetypes import MimeTypes
 import pandas as pd
 from werkzeug.utils import secure_filename
 from modules.csv_importer import csv_parse
+from modules.postgresql_exporter import load_data
 
 app = Flask(__name__)
 
@@ -16,6 +17,11 @@ app.secret_key = 'This is my secret key to utilize session in Flask Data Uploade
 def index():
     return redirect(location = f"{app.config['BASE_URL']}/upload", code = 302)
 
+@app.route("/person", methods=["GET"])
+def show_person():
+    pg_data = load_data(table = "person")
+    show_user = pg_data.describe()
+    return render_template('show_csv_data.html', data_var=show_user)
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():

@@ -4,25 +4,21 @@ import pandas as pd
 import json
 from pathlib import Path
 
+# Variables globales
+this_dir = Path(__file__).parent
+
+# Interactions avec la Base de données
 def connect_to_db(user, pwd, host, db):
-    connection_uri = f"postgresql://user:pwd@host:5432/db"
+    connection_uri = f"postgresql://{user}:{pwd}@{host}:5432/{db}"
     db_engine_dwh = sqlalchemy.create_engine(connection_uri)
     return db_engine_dwh
-
-#db_session = connect_to_db(
-#    user = 'postgremaster',
-#    pwd = 'JIHYkhjza3UE87345983GVCE',
-#    host = 'postgres',
-#    db = 'main'
-#)
-
-this_dir = Path(__file__).parent
 
 def send_data(df, table, db_session):
     df.to_sql(name = table,
               con = db_session
               )
 
+# Extraction d'un fichier CSV
 def csv_parse(file_path):
     with open(this_dir / 'data_schemas.json', 'r') as file:
         data_schemas = json.load(file)
@@ -69,6 +65,7 @@ def csv_parse(file_path):
     schema = all_id_df.describe()
     return (nb_lignes, schema)
 
+# Fonctions utilitaires
 def generate_id(df, columns, column_name):
     df[column_name] = df[columns].apply(lambda x: '_'.join(str(x)), axis = 1)
     return df
