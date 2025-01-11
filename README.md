@@ -28,6 +28,6 @@ docker-compose up
 
 ## TODO
 
-- Traitement de fichiers xlsx en erreur pour le moment depuis l'API Flask. Mais la fonction coeur renvoi un résultat qui me semble bon.
-- Mettre de côté les fonctions de connexion à la base de données
+- Actuellement on fait un replace en Base de données. Pour améliorer cela, il faut charger les données en base (SELECT * FROM {table}), effectyuer une union avec le DataFrame courant, puis écrire dans la base en mode replace.
+- Mettre de côté les fonctions de connexion à la base de données. Idem pour les fonctions de traitement de données. J'ai dupliqué les modules en avance de phase au acs où les fichiers avaient un schéma qui n'avait rien à voir entre la version CSV et la version XLSX.
 - Créer un fichier de configuration global de l'API Flask 

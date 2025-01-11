@@ -19,6 +19,7 @@ def send_data(df, table, db_session):
               if_exists = 'replace'
               )
 
+
 # Extraction d'un fichier CSV
 def xlsx_parse(file_path):
     with open(this_dir / 'data_schemas.json', 'r') as file:

@@ -25,6 +25,18 @@ def show_person():
     show_user = pg_data.describe()
     return render_template('show_csv_data.html', data_var=show_user)
 
+@app.route("/job", methods=["GET"])
+def show_job():
+    pg_data = load_data(table = "job")
+    show_user = pg_data.describe()
+    return render_template('show_csv_data.html', data_var=show_user)
+
+@app.route("/organization", methods=["GET"])
+def show_organization():
+    pg_data = load_data(table = "organization")
+    show_user = pg_data.describe()
+    return render_template('show_csv_data.html', data_var=show_user)
+
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     match request.method:
@@ -33,10 +45,11 @@ def upload():
             f = request.files.get('file')
             data_filename = f.filename
             staging_path = app.config['UPLOAD_FOLDER'] / data_filename
-            # Extracting uploaded file name
+
+            # Extraction uploaded file name
             f.save( app.config['UPLOAD_FOLDER'] / data_filename)
             app.logger.info(f"file saved successfully at {staging_path}")
-            session['uploaded_data_file_path'] =  app.config['UPLOAD_FOLDER'] /  data_filename
+
             # Traitement du fichier qui dépend du mime type
             mime = MimeTypes()
             mime_type = mime.guess_type(staging_path)[0]
@@ -44,28 +57,16 @@ def upload():
                 case 'text/csv':
                     (nb_lines, schema) = csv_parse(staging_path)
                     return render_template('success_csv.html', nb_lines = nb_lines, schema = schema)
-                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' :
                     (nb_lines, schema) = xlsx_parse(staging_path)
                     return render_template('success_xlsx.html', nb_lines=nb_lines, schema=schema)
+                # La condition ci-dessus ne passe pas. Les .xlsx passeront dans le else.
                 case _:
                     (nb_lines, schema) = xlsx_parse(staging_path)
                     return render_template('success_xlsx.html', nb_lines=nb_lines, schema=schema)
             return render_template('mime_type_not_supported.html', mime_type = mime_type)
         case "GET":
             return render_template("upload_page.html")
-            #return f"Now I should render template located at {templates_directory}"
-@app.route('/show_data')
-def showData():
-    # Uploaded File Path
-    data_file_path = session.get('uploaded_data_file_path', None)
-    # read csv
-    uploaded_df = pd.read_csv(data_file_path,
-                              encoding='unicode_escape')
-    # Converting to html Table
-    uploaded_df_html = uploaded_df.to_html()
-    return render_template('show_csv_data.html',
-                           data_var=uploaded_df_html)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
