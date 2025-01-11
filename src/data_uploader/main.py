@@ -41,9 +41,10 @@ def upload():
                 case 'text/csv':
                     (nb_lines, schema) = csv_parse(staging_path)
                     return render_template('success_csv.html', nb_lines = nb_lines, schema = schema)
-                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                     (nb_lines, schema) = xlsx_parse(staging_path)
                     return render_template('success_xlsx.html', nb_lines=nb_lines, schema=schema)
+
 
             return render_template('success_upload.html', mime_type = mime_type)
         case "GET":
