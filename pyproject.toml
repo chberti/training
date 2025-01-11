@@ -5,6 +5,7 @@ dependencies = [
     "Flask",
     "pytest",
     "pandas",
-    "openpyxl"
+    "openpyxl",
+    "werkzeug"
 ]
 
