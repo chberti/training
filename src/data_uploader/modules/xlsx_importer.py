@@ -20,28 +20,24 @@ def send_data(df, table, db_session):
               )
 
 # Extraction d'un fichier CSV
-def csv_parse(file_path):
+def xlsx_parse(file_path):
     with open(this_dir / 'data_schemas.json', 'r') as file:
         data_schemas = json.load(file)
     # Extraction du CSV et nommage des colonnes
-    df = pd.read_csv(file_path, delimiter = ';')
-    df = df.rename(columns = {'dataFirstNames':'first_names',
-                         'dataLastName': 'last_name',
-                         'dataEmail': 'email',
-                         'dataPhone': 'phone',
-                         'dataFax': 'fax',
-                         'dataTitle': 'title',
-                         'dataJobTitle': 'job_title',
-                         'dataPositionType': 'job_type',
-                         'dataOrganization': 'org_name',
-                         'dataJobStartDate': 'start_date',
-                         'dataURI': 'org_vivo_uri'
+    df = pd.read_excel(file_path)
+    df = df.rename(columns = {'raw_first':'first_name',
+                         'raw_last': 'last_name',
+                         'raw_middle': "middle_name",
+                         'raw_email': 'email',
+                         'raw_phone': 'phone',
+                         'raw_fax': 'fax',
+                         'raw_title': 'title',
+                         'raw_job_title': 'job_title',
+                         'raw_position': 'job_type',
+                         'raw_org_name': 'org_name',
+                         'raw_date': 'start_date',
+                         'raw_uri': 'org_vivo_uri'
                          })
-
-    # Extraction des prénoms
-    df['first_name'] = df['first_names'].str.split(',', expand=True)[0]
-    df['middle_name'] = (df['first_names'].str.split(',', expand=True)[1]).fillna('')
-
     # Génération de tous les ids
     all_id_df = df
     for schema in data_schemas.keys():

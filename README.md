@@ -5,7 +5,8 @@ some training
 
 - API Flask qui expose une page simple sur l'endpoint /upload
 - En cas le POST, le fichier est chargé et un check de type CSV est effectué
-- Si c'est un CSV, alors on lance la fonction de traitement dans le moudle csv_importer
+- Si c'est un CSV, alors on lance la fonction de traitement dans le module csv_importer
+- Si vous vous rendez sur l'endpoint /person, vous aure un .describe du fichier csv chargé
 
 ### csv_importer
 
