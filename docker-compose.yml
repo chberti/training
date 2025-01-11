@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=JIHYkhjza3UE87345983GVCE
+      - POSTGRES_USER=postgremaster
+      - POSTGRES_DB=main
+    networks:
+      - back
+  api_uploader:
+    image: current_app:latest
+    ports:
+      - 5000:5000
+    networks:
+      - front_default
+      - back
+
+networks:
+  front_default:
+    driver: bridge
+  back:
+    driver: bridge
