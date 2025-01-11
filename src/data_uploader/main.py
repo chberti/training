@@ -44,9 +44,10 @@ def upload():
                 case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                     (nb_lines, schema) = xlsx_parse(staging_path)
                     return render_template('success_xlsx.html', nb_lines=nb_lines, schema=schema)
-
-
-            return render_template('success_upload.html', mime_type = mime_type)
+                case _:
+                    (nb_lines, schema) = xlsx_parse(staging_path)
+                    return render_template('success_xlsx.html', nb_lines=nb_lines, schema=schema)
+            return render_template('mime_type_not_supported.html', mime_type = mime_type)
         case "GET":
             return render_template("upload_page.html")
             #return f"Now I should render template located at {templates_directory}"
