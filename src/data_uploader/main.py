@@ -1,5 +1,5 @@
 # main.py
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, redirect
 from pathlib import Path
 import os
 from werkzeug.utils import secure_filename
@@ -7,12 +7,12 @@ import pandas as pd
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = Path(__file__).parent / "uploads"
-
+app.config['BASE_URL'] = "http://localhost:5000"
 app.secret_key = 'This is my secret key to utilize session in Flask Data Uploader'
 
 @app.route("/")
-def hello_world():
-    return "Hello, World! Please go to /upload endpoint to try the API"
+def index():
+    return redirect(location = f"{app.config['BASE_URL']}/upload", code = 302)
 
 
 @app.route("/upload", methods=["GET", "POST"])
