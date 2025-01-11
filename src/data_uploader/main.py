@@ -6,7 +6,9 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 app = Flask(__name__)
 
-UPLOAD_FOLDER = Path(__file__).parent / "uploads"
+app.config['UPLOAD_FOLDER'] = Path(__file__).parent / "uploads"
+
+app.secret_key = 'This is my secret key to utilize session in Flask Data Uploader'
 
 @app.route("/")
 def hello_world():
@@ -20,11 +22,11 @@ def upload():
             f = request.files.get('file')
             # Extracting uploaded file name
             data_filename = secure_filename(f.filename)
-            f.save( UPLOAD_FOLDER / data_filename)
+            f.save( app.config['UPLOAD_FOLDER'] / data_filename)
 
             session['uploaded_data_file_path'] =  os.path.join(app.config['UPLOAD_FOLDER'],  data_filename)
 
-            return render_template('index2.html')
+            return render_template('success_upload.html')
         case "GET":
             return render_template("upload_page.html")
             #return f"Now I should render template located at {templates_directory}"
