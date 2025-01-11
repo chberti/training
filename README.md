@@ -6,7 +6,7 @@ some training
 - API Flask qui expose une page simple sur l'endpoint /upload
 - En cas le POST, le fichier est chargé et un check de type CSV est effectué
 - Si c'est un CSV, alors on lance la fonction de traitement dans le module csv_importer
-- Si vous vous rendez sur l'endpoint /person, vous aurez un .describe() du fichier csv chargé
+- Si vous vous rendez sur l'endpoint /person (ou /job, ou /orgnization), vous aurez un .describe() de la table postgreSQL correspondante
 
 ### csv_importer
 
