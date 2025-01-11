@@ -1,0 +1,10 @@
+[project]
+name = "training"
+version = "v1.0.0a0"
+dependencies = [
+    "Flask",
+    "pytest",
+    "pandas",
+    "openpyxl"
+]
+

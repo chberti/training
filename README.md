@@ -1,2 +1,2 @@
 # training
-some trining
+some training
